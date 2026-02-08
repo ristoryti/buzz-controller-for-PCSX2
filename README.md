@@ -145,9 +145,22 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 3. Make sure PCSX2 window is in focus (click on it)
 4. Check that you configured the controller bindings in PCSX2 settings
 
+The server prints helpful debug messages when buttons are pressed:
+```
+[14:23:45] P1 - BUZZER: PRESS (key: q)
+[14:23:45] P1 - BUZZER: RELEASE (key: q)
+```
+
+This helps you see if:
+1. The phone is connecting properly
+2. Button presses are being received
+3. The correct keys are being sent
+
+If you see these messages but PCSX2 doesn't respond, the issue is with PCSX2's controller configuration.
+
 
 ### Blue button is pressing by itself or other similar input errors in-game  
-- These bugs have been resolved in the PCSX2 release, check if you are on an older version.
+- These bugs have been resolved in the PCSX2 2.6 release. Make sure you're not running on an older version.
 
 ### "ModuleNotFoundError" when running server
 
@@ -161,28 +174,6 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 
 - Restart the server (close Command Prompt and run `python buzz_server.py` again)
 - This releases any stuck keys
-
-
-## Advanced: Running on Network
-
-By default, the server listens on all network interfaces (0.0.0.0), so any device on your local network can connect.
-
-**Security Note:** This is only accessible on your local network. Don't expose port 8765 to the internet.
-
-## Having Issues?
-
-The server prints helpful debug messages when buttons are pressed:
-```
-[14:23:45] P1 - BUZZER: PRESS (key: q)
-[14:23:45] P1 - BUZZER: RELEASE (key: q)
-```
-
-This helps you see if:
-1. The phone is connecting properly
-2. Button presses are being received
-3. The correct keys are being sent
-
-If you see these messages but PCSX2 doesn't respond, the issue is with PCSX2's controller configuration.
 
 ## Customizing Key Mappings
 
@@ -257,8 +248,5 @@ These have been modified for scandinavian keyboard and there might be some issue
 - Orange: 8
 - Green: 9
 - Yellow: 0
-
-
-## Enjoy!
 
 Have fun playing Buzz! with up to 8 players using your smartphones as controllers!
