@@ -121,7 +121,15 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 
 ### Phones won't connect / "Disconnected" status
 
-**Check 1: Firewall**
+**Check 1: Network**
+- Make sure your PC and phones are on the **same WiFi network**
+- Some guest WiFi networks block device communication
+
+**Check 2: IP Address**
+- Double-check your PC's IP address with `ipconfig`
+- Make sure you're using the correct IP in the browser
+
+**Check 3: Firewall**
 - Windows Firewall might be blocking connections
 - When you first run the server, Windows may ask to allow access - click "Allow"
 - If you didn't see this, manually allow Python through firewall:
@@ -129,20 +137,14 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
   2. Click "Allow an app through firewall"
   3. Find Python and check both "Private" and "Public"
 
-**Check 2: Network**
-- Make sure your PC and phones are on the **same WiFi network**
-- Some guest WiFi networks block device communication
-
-**Check 3: IP Address**
-- Double-check your PC's IP address with `ipconfig`
-- Make sure you're using the correct IP in the browser
 
 ### Buttons don't work in PCSX2
 
-1. Make sure PCSX2 window is in focus (click on it)
-2. Check that you configured the controller bindings in PCSX2 settings
-3. Test that the keys work - when you press a button on the phone, the server should print messages
-4. Make sure the server is running **as Administrator**
+1. Test that the keys work - when you press a button on the phone, the server should print messages
+2.  Make sure the server is running **as Administrator**
+3. Make sure PCSX2 window is in focus (click on it)
+4. Check that you configured the controller bindings in PCSX2 settings
+
 
 ### Blue button is pressing by itself or other similar input errors in-game  
 - These bugs have been resolved in the PCSX2 release, check if you are on an older version.
