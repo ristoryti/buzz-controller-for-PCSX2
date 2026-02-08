@@ -1,13 +1,12 @@
 # BUZZ! Controller System - Setup Guide
 
-This system lets you use smartphones as Buzz! quiz controllers for PCSX2 on Windows. It works by mapping button presses as keyboard presses for the emulator. The phones must be on the same network as the PC running the game and server.   
-
-The code was fully generated using Claude AI (Sonnet 4.5) and has been tested and working.
+This system lets you use smartphones as Buzz! quiz controllers for PCSX2 on Windows. It works by mapping button presses as keyboard presses for the emulator. The phones must be on the same network as the PC running the game and server. Supports 1-8 players.
   
   
 
 <img src="https://github.com/user-attachments/assets/aa0317aa-c1f6-4ff0-b7d8-a193eb316ada" width="250">
 
+The code was fully generated using Claude AI (Sonnet 4.5) and has been tested and working.
 
 ## Files Included
 
