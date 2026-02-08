@@ -1,4 +1,4 @@
-# BUZZ! Controller System - Setup Guide
+# BUZZ! Controller Web Server & Web UI
 
 This system lets you use smartphones as Buzz! quiz controllers for PCSX2 on Windows. It works by mapping button presses as keyboard presses for the emulator. The phones must be on the same network as the PC running the game and server. Supports 1-8 players.
   
