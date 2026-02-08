@@ -6,7 +6,7 @@ This system lets you use smartphones as Buzz! quiz controllers for PCSX2 on Wind
 
 <img src="https://github.com/user-attachments/assets/aa0317aa-c1f6-4ff0-b7d8-a193eb316ada" width="250">
 
-The code was fully generated using Claude AI (Sonnet 4.5) and has been tested and working.
+The code was fully generated using Claude AI (Sonnet 4.5) and has been tested with PCSX2 ver2.6.3 with no obvious bugs.
 
 ## Files Included
 
