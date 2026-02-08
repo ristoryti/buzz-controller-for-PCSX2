@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Buzz! Controller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Arial Black', Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #controller-number {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        #settings-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 100;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        #settings-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: white;
+        }
+
+        #settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        #settings-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #2a2a40;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal-content h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .controller-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .controller-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            background: #3a3a50;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controller-option:hover {
+            background: #4a4a60;
+            transform: scale(1.05);
+        }
+
+        .controller-option.selected {
+            border-color: #ff6b35;
+            background: #ff6b35;
+        }
+
+        #close-settings {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #close-settings:hover {
+            background: #ff8555;
+            transform: scale(1.05);
+        }
+
+        #connection-status {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #ff6b35;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        #connection-status.connected {
+            color: #4caf50;
+        }
+
+        .controller-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 20px 60px 20px;
+            gap: 15px;
+        }
+
+        .button {
+            width: 90%;
+            max-width: 500px;
+            border: none;
+            border-radius: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.3), 0 10px 20px rgba(0,0,0,0.4);
+            position: relative;
+            touch-action: manipulation;
+        }
+
+        .button:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3), 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .button.pressed {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3), 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        #buzzer {
+            height: 25%;
+            background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000);
+            border-radius: 50%;
+            font-size: 36px;
+            letter-spacing: 3px;
+        }
+
+        #blue {
+            height: 15%;
+            background: linear-gradient(180deg, #4169e1, #1e3a8a);
+        }
+
+        #orange {
+            height: 15%;
+            background: linear-gradient(180deg, #ff8c00, #cc6600);
+        }
+
+        #green {
+            height: 15%;
+            background: linear-gradient(180deg, #32cd32, #228b22);
+        }
+
+        #yellow {
+            height: 15%;
+            background: linear-gradient(180deg, #ffd700, #ccaa00);
+        }
+
+        @media (max-height: 600px) {
+            .controller-container {
+                gap: 8px;
+                padding: 10px 10px 50px 10px;
+            }
+            
+            .button {
+                font-size: 20px;
+            }
+            
+            #buzzer {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="controller-number">P1</div>
+    
+    <div id="connection-status">Connecting...</div>
+    
+    <div id="settings-icon">
+        <svg viewBox="0 0 24 24">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+        </svg>
+    </div>
+
+    <div id="settings-modal">
+        <div class="modal-content">
+            <h2>Select Controller Number</h2>
+            <div class="controller-grid">
+                <div class="controller-option" data-controller="1">1</div>
+                <div class="controller-option" data-controller="2">2</div>
+                <div class="controller-option" data-controller="3">3</div>
+                <div class="controller-option" data-controller="4">4</div>
+                <div class="controller-option" data-controller="5">5</div>
+                <div class="controller-option" data-controller="6">6</div>
+                <div class="controller-option" data-controller="7">7</div>
+                <div class="controller-option" data-controller="8">8</div>
+            </div>
+            <button id="close-settings">Done</button>
+        </div>
+    </div>
+
+    <div class="controller-container">
+        <button class="button" id="buzzer" data-button="buzzer">BUZZ!</button>
+        <button class="button" id="blue" data-button="blue">Blue</button>
+        <button class="button" id="orange" data-button="orange">Orange</button>
+        <button class="button" id="green" data-button="green">Green</button>
+        <button class="button" id="yellow" data-button="yellow">Yellow</button>
+    </div>
+
+    <script>
+        let ws = null;
+        let reconnectInterval = null;
+        let currentController = 1;
+        
+        // Use the current hostname for WebSocket connection
+        const hostname = window.location.hostname || 'localhost';
+        const SERVER_URL = `ws://${hostname}:8765`;
+        
+        console.log('WebSocket URL:', SERVER_URL);  // Debug log
+
+        // Load saved controller number
+        const savedController = localStorage.getItem('buzzController');
+        if (savedController) {
+            currentController = parseInt(savedController);
+            document.getElementById('controller-number').textContent = `P${currentController}`;
+            document.querySelector(`.controller-option[data-controller="${currentController}"]`).classList.add('selected');
+        } else {
+            document.querySelector('.controller-option[data-controller="1"]').classList.add('selected');
+        }
+
+        // Settings modal
+        document.getElementById('settings-icon').addEventListener('click', () => {
+            document.getElementById('settings-modal').classList.add('active');
+        });
+
+        document.getElementById('close-settings').addEventListener('click', () => {
+            document.getElementById('settings-modal').classList.remove('active');
+        });
+
+        document.querySelectorAll('.controller-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.controller-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                currentController = parseInt(option.dataset.controller);
+                document.getElementById('controller-number').textContent = `P${currentController}`;
+                localStorage.setItem('buzzController', currentController);
+                
+                // Auto-close the modal
+                setTimeout(() => {
+                    document.getElementById('settings-modal').classList.remove('active');
+                }, 200);
+            });
+        });
+
+        // WebSocket connection
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket(SERVER_URL);
+                
+                ws.onopen = () => {
+                    console.log('Connected to server');
+                    document.getElementById('connection-status').textContent = 'Connected';
+                    document.getElementById('connection-status').classList.add('connected');
+                    if (reconnectInterval) {
+                        clearInterval(reconnectInterval);
+                        reconnectInterval = null;
+                    }
+                };
+                
+                ws.onclose = () => {
+                    console.log('Disconnected from server');
+                    document.getElementById('connection-status').textContent = 'Disconnected';
+                    document.getElementById('connection-status').classList.remove('connected');
+                    
+                    if (!reconnectInterval) {
+                        reconnectInterval = setInterval(connectWebSocket, 3000);
+                    }
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                if (!reconnectInterval) {
+                    reconnectInterval = setInterval(connectWebSocket, 3000);
+                }
+            }
+        }
+
+        // Button handling
+        function sendButtonPress(button, pressed) {
+            console.log(`Button ${button} ${pressed ? 'PRESSED' : 'RELEASED'} by P${currentController}`);  // Debug
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const message = JSON.stringify({
+                    controller: currentController,
+                    button: button,
+                    pressed: pressed
+                });
+                console.log('Sending:', message);  // Debug
+                ws.send(message);
+            } else {
+                console.log('WebSocket not connected! State:', ws ? ws.readyState : 'null');  // Debug
+            }
+        }
+
+        // Add touch and mouse event handlers for all buttons
+        document.querySelectorAll('.button').forEach(button => {
+            const buttonName = button.dataset.button;
+            
+            // Mouse events
+            button.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                button.classList.add('pressed');
+                sendButtonPress(buttonName, true);
+            });
+            
+            button.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                button.classList.remove('pressed');
+                sendButtonPress(buttonName, false);
+            });
+            
+            button.addEventListener('mouseleave', (e) => {
+                button.classList.remove('pressed');
+                sendButtonPress(buttonName, false);
+            });
+            
+            // Touch events
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                button.classList.add('pressed');
+                sendButtonPress(buttonName, true);
+            });
+            
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                button.classList.remove('pressed');
+                sendButtonPress(buttonName, false);
+            });
+            
+            button.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                button.classList.remove('pressed');
+                sendButtonPress(buttonName, false);
+            });
+        });
+
+        // Prevent context menu on long press
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Connect on load
+        connectWebSocket();
+    </script>
+</body>
+</html>
