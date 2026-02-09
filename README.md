@@ -13,8 +13,9 @@ The code was fully generated using Claude AI (Sonnet 4.5) and has been tested wi
 1. `buzz_controller.html` - Web-based controller interface (open on phones)
 2. `buzz_server.py` - Python server that runs on your PC
 3. `requirements.txt` - Python dependencies
-4. `SETUP.md` - This file
-5. `Buzz 1-8 Mapping.ini` - Button mapping file for PCSX2
+4. `Buzz 1-8 Mapping.ini` - Button mapping file for PCSX2
+5. `Startup.txt` - Text file for copy pasting the commands for starting the server
+6. `SETUP.md` - This file
 
 ## Setup Instructions
 
@@ -97,8 +98,6 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 
 **Important:** Keep this Command Prompt window open while playing!
 
-**Tip:** Use an online qr code generator or url shortener to make it easier for players to connect to the server.
-
 #### Option B: Direct File Access (Alternative)
 
 1. Transfer `buzz_controller.html` to each phone
@@ -118,6 +117,11 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 4. Start your Buzz! game in PCSX2
 5. Test the buttons - they should work!
 
+### Tips
+
+1. Use Startup.txt to copy paste the server startup commands quickly
+2. Use a qr code generator to make player joining easier
+3. Alternatively use bit.ly or other url shortener for easy typing 
 
 ## Troubleshooting
 
