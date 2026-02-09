@@ -95,6 +95,8 @@ _(Older versions have bugs with buzz controllers and those bugs are also present
 7. Select the controller number (1-8)
 8. Tap "Done"
 
+**Important:** Keep this Command Prompt window open while playing!
+
 **Tip:** Use an online qr code generator or url shortener to make it easier for players to connect to the server.
 
 #### Option B: Direct File Access (Alternative)
