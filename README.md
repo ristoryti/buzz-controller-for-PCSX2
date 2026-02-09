@@ -248,5 +248,3 @@ These have been modified for scandinavian keyboard and there might be some issue
 - Orange: 8
 - Green: 9
 - Yellow: 0
-
-Have fun playing Buzz! with up to 8 players using your smartphones as controllers!
